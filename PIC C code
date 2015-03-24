@@ -1,1 +1,29 @@
-
+#include <Lab1.h>
+unsigned int counter=0;
+int i=0;
+void main()
+{
+set_tris_a(0xff);
+set_tris_d(0x00);
+   output_d(counter);
+   while(true){
+      while(i<8){
+         if(input(pin_a1)==false){
+            while(input(pin_a1)==false){output_d(counter);}
+               counter=counter+counter+1;
+               output_d(counter);
+               i++;
+               printf("%x, %d\r\n", counter,i);
+         }
+      }
+      while(i>0){
+         if(input(pin_a1)==false){
+            while(input(pin_a1)==false){output_d(counter);}
+               counter=(counter-1)/2;
+               output_d(counter);
+               i--;
+               printf("%x, %d\r\n", counter, i);
+         }
+      }
+   }
+}
