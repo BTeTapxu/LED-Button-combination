@@ -1,0 +1,48 @@
+#include "adc_timer.h"
+#define led PIN_B0
+#bit TMR10N=0XFCD.0
+
+float value[2];
+int i;
+
+#int_timer1
+void TIMER1_ISR()
+{
+static char ten_ms=0;
+set_timer1(60535);
+ten_ms++;
+if(ten_ms==25)
+{
+output_toggle(led);
+ten_ms=0;
+}
+}
+
+
+void main()
+{
+
+   setup_adc_ports(AN0_AN1_VSS_VREF);
+   setup_adc(ADC_CLOCK_INTERNAL);
+   setup_psp(PSP_DISABLED);
+   setup_spi(FALSE);
+   setup_timer_0(RTCC_INTERNAL|RTCC_DIV_1);
+   
+   setup_timer_1(T1_INTERNAL|T1_DIV_BY_2);
+   setup_timer_2(T2_DISABLED,0,1);
+   setup_comparator(NC_NC_NC_NC);
+   setup_vref(FALSE);
+   
+   // TODO: USER CODE!!
+   set_timer1(60535);
+   enable_interrupts(INT_TIMER1);
+   enable_interrupts(global);
+   TMR10N=1;
+   while(true){
+    for(i=0;i<2;i++){
+      set_adc_channel(i);
+      value[i]=read_adc()*0.0196078431372549;
+      }
+      printf("analog1 = %f, analog2 = %f\r\n", value[0], value[1]);
+   }
+}
