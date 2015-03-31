@@ -1,5 +1,4 @@
-#include <16F877A.h>
-#device adc=16
+#include <labs.h>
 
 unsigned int counter=0;
 int i=0;
